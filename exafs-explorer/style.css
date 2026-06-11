@@ -1,0 +1,993 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    /* Allow vertical scrolling, prevent horizontal */
+    background-color: #ffffff;
+    /* Google white */
+    /* Google Antigravity style font stack. Tries to use Google Sans if available locally (common on Chrome/Android), otherwise Outfit/Roboto fallback */
+    font-family: 'Google Sans', 'Google Sans Text', 'Outfit', Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#particleCanvas {
+    position: fixed;
+    /* Fixed so it creates a nice parallax behind scroll items */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    /* Let clicks pass through */
+}
+
+/* --- Navigation Bar (Google Antigravity Style) --- */
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 40px;
+    box-sizing: border-box;
+    z-index: 50;
+    background: transparent;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: 48px;
+    font-weight: 500;
+    color: #1f1f1f;
+    font-size: 1.15rem;
+    /* Google sizing */
+    letter-spacing: -0.01em;
+}
+
+.nav-logo {
+    height: 32px;
+    /* Slightly larger, adjusting for the main logo aspect ratio */
+    width: auto;
+}
+
+.mobile-menu-btn {
+    display: none;
+    /* Hidden on desktop */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #444746;
+    font-size: 1rem;
+    font-weight: 400;
+    /* Google uses lighter weights for nav typically */
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-links li a:hover {
+    color: #1f1f1f;
+}
+
+/* Dropdown */
+.dropdown {
+    /* Removed position: relative to allow children to position relative to navbar */
+    display: inline-block;
+}
+
+.chevron {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.dropdown:hover .chevron,
+.dropdown:focus-within .chevron {
+    transform: rotate(180deg);
+}
+
+.dropdown-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    /* Immediately below the navbar */
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.08);
+    border-top: 1px solid #f1f3f4;
+    border-bottom: 1px solid #f1f3f4;
+    z-index: 60;
+
+    /* Smooth, elegant slide down - not too fast */
+    transform: translateY(-10px);
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mega-menu-inner {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mega-menu-inner.layout-divider {
+    padding: 24px 32px;
+    align-items: stretch;
+}
+
+.mega-left-col {
+    display: flex;
+    flex: 1;
+}
+
+.mega-link {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    flex: 1;
+}
+
+.mega-link.mega-compact {
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 16px;
+}
+
+.mega-link:hover {
+    background-color: #f8f9fa;
+}
+
+.mega-icon-box {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mega-icon-box svg {
+    width: 100%;
+    height: 100%;
+}
+
+.mega-content-row {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    /* allow long descriptions to wrap below title if screen is too narrow */
+}
+
+.mega-title {
+    color: #1f1f1f;
+    font-size: 1.15rem;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.mega-desc {
+    color: #5f6368;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Magma Color Utility Classes */
+.magma-color-1 {
+    color: #f7705c !important;
+}
+
+.magma-color-2 {
+    color: #b73779 !important;
+}
+
+.magma-color-3 {
+    color: #3b0f70 !important;
+}
+
+.mega-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+/* Thin Frame Dividers */
+.divider-left {
+    border-left: 1px solid #f1f3f4;
+    padding-left: 32px;
+}
+
+.divider-horizontal {
+    height: 1px;
+    background-color: #f1f3f4;
+    width: calc(100% - 40px);
+    margin: 4px auto;
+}
+
+@media (max-width: 900px) {
+    .mega-col {
+        gap: 12px;
+        width: 100%;
+    }
+
+    .divider-left {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid #f1f3f4;
+        padding-top: 16px;
+    }
+
+    .mega-content-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .mega-menu-inner.layout-divider {
+        padding: 16px 20px;
+    }
+}
+
+/* --- Sections --- */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+}
+
+.content {
+    position: absolute;
+    top: calc(42% + 50px);
+    /* Raised 150px from +200px per user request */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 1200px;
+    pointer-events: none;
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    /* Stack vertically! */
+    align-items: center;
+    /* Center align */
+    justify-content: center;
+    gap: 30px;
+}
+
+.logo {
+    width: 250px;
+    /* Made smaller per request */
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.03));
+    animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.text-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1.typing-container {
+    font-size: 3.5rem;
+    /* Made bigger per request */
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -0.015em;
+    text-align: center;
+    /* Center the text */
+    min-width: 800px;
+    /* Increase min width due to larger text */
+    min-height: 120px;
+    font-family: 'Google Sans', 'Outfit', sans-serif;
+}
+
+/* Transparent Text with Magma Gradient */
+.magma-text {
+    /* Subtle Magma gradient: Mostly dark grey, blending into magma colors at the very end */
+    background: linear-gradient(110deg, #1f1f1f 0%, #1f1f1f 65%, #3b0f70 80%, #b73779 92%, #f7705c 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+    text-shadow: none;
+    display: inline;
+}
+
+/* --- Blinking Cursor Animation --- */
+.cursor {
+    display: inline-block;
+    width: 3px;
+    /* Thin line cursor */
+    height: 1.1em;
+    /* Cursor color mostly dark, blending to magma pink/orange at the bottom */
+    background: linear-gradient(to bottom, #1f1f1f 0%, #1f1f1f 60%, #b73779 85%, #f7705c 100%);
+    margin-left: 4px;
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+}
+
+/* --- Hero Action Buttons --- */
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+    /* Gives some breathing room after the large hero text */
+    justify-content: center;
+    opacity: 0;
+    pointer-events: auto;
+    /* Re-enable clicks since parent .content has none */
+    /* Delay the buttons to fade in strictly AFTER the typing animation completes (~3s) */
+    animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 3s;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    width: 180px;
+    /* Fixed width so both buttons match perfectly */
+    box-sizing: border-box;
+    border-radius: 40px;
+    /* Fully rounded pill shape */
+    font-size: 1.15rem;
+    font-family: 'Google Sans', 'Outfit', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    /* Dark Magma gradient (purple to red, no orange) with slight transparency */
+    background: linear-gradient(135deg, rgba(31, 0, 92, 0.85) 0%, rgba(183, 55, 121, 0.85) 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    opacity: 0.9;
+}
+
+.btn-secondary {
+    background-color: rgba(245, 245, 247, 0.7);
+    color: #111111;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.btn-secondary:hover {
+    background-color: #ebebed;
+}
+
+/* For formatting the inner HTML of the typewriter */
+.magma-text br {
+    display: block;
+    content: " ";
+    margin-top: 5px;
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* --- Added Video Section --- */
+.demo-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    /* Full viewport height */
+    background-color: #000000;
+    z-index: 20;
+    overflow: hidden;
+}
+
+/* --- Left Side Dot Navigation --- */
+.dot-nav {
+    position: fixed;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    z-index: 30;
+    /* Always above video */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.dot-nav.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+/* --- Demo Video Overlay --- */
+.video-overlay-content {
+    position: absolute;
+    bottom: 60px;
+    /* Distance from the bottom of the video section */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.3s;
+    /* Fade in shortly after the section is reached */
+    pointer-events: none;
+}
+
+/* Show the overlay when the video is active */
+.demo-section .demo-video.active~.video-overlay-content {
+    opacity: 1;
+    pointer-events: auto;
+    /* Let people click the button */
+}
+
+.dot-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Smoother gap */
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    /* Add this because they are now anchor tags */
+}
+
+.dot-item:hover {
+    opacity: 0.8;
+}
+
+.dot-item.active {
+    opacity: 1;
+}
+
+.dot-indicator {
+    width: 10px;
+    /* Make smaller */
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    /* Keep hollow */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: transparent;
+    /* Always transparent inside */
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dot-label {
+    color: #ffffff;
+    /* Contrast on video */
+    font-size: 1rem;
+    /* Match nav font size */
+    font-family: 'Google Sans', 'Outfit', sans-serif;
+    font-weight: 400;
+    /* Match nav weight */
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    /* Shadow for readability on video */
+}
+
+/* Show label when active or hovered */
+.dot-item.active .dot-label,
+.dot-item:hover .dot-label {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Magma Gradient Coloring for Active Dots - only change outline and glow, keep hollow */
+.dot-item.active.group-1 .dot-indicator {
+    border-color: #f7705c;
+    box-shadow: 0 0 15px rgba(247, 112, 92, 0.6);
+}
+
+.dot-item.active.group-1 .dot-label {
+    color: #f7705c;
+}
+
+.dot-item.active.group-2 .dot-indicator {
+    border-color: #b73779;
+    box-shadow: 0 0 15px rgba(183, 55, 121, 0.6);
+}
+
+.dot-item.active.group-2 .dot-label {
+    color: #b73779;
+}
+
+.dot-item.active.group-3 .dot-indicator {
+    border-color: #3b0f70;
+    box-shadow: 0 0 15px rgba(59, 15, 112, 0.6);
+}
+
+.dot-item.active.group-3 .dot-label {
+    color: #9d5de4;
+    /* Using a lighter variation of 3b0f70 for text readability on dark bg */
+}
+
+.dot-item:hover:not(.active) .dot-indicator {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.video-wrapper {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Behind text */
+}
+
+.demo-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Fill the entire section, cropping if necessary */
+    display: block;
+    background-color: #000000;
+}
+
+/* --- Modern Footer --- */
+.site-footer {
+    position: relative;
+    background: rgba(255, 255, 255, 1);
+    color: #1f1f1f;
+    padding: 60px 40px 40px;
+    font-family: 'Outfit', sans-serif;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    /* Subtle dark border top */
+    z-index: 100;
+}
+
+.footer-bottom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.footer-right {
+    display: none;
+}
+
+/* --- Left Side Content --- */
+.footer-socials {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+
+.footer-socials a {
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Darker Magma Colors for Logos */
+.footer-socials a.social-github {
+    color: #641a80;
+}
+
+.footer-socials a.social-x {
+    color: #8c2981;
+}
+
+.footer-socials a.social-discord {
+    color: #b73779;
+}
+
+.footer-socials a.social-email {
+    color: #de4968;
+}
+
+.footer-socials a:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.2);
+    /* Slight brightening on hover */
+}
+
+.footer-links-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-links-row a {
+    color: #5f6368;
+    /* Google grey */
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links-row a:hover {
+    color: #1f1f1f;
+}
+
+.footer-ldrd-support {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #5f6368;
+    /* Google grey */
+    max-width: 600px;
+}
+
+.footer-copyright {
+    font-size: 0.85rem;
+    color: #9aa0a6;
+    /* Lighter grey */
+}
+
+/* Footer Responsiveness */
+@media (max-width: 900px) {
+    .footer-bottom-container {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 40px;
+    }
+
+    .footer-right {
+        flex: none;
+        width: 100%;
+    }
+
+    .footer-left {
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-links-row {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-footer {
+        padding: 40px 20px;
+    }
+
+    .footer-links-row {
+        gap: 20px;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* --- Mobile View Adjustments --- */
+@media (max-width: 900px) {
+
+    /* Navigation Bar */
+    .navbar {
+        padding: 0 20px;
+        height: 60px;
+    }
+
+    .nav-brand {
+        margin-right: auto;
+        /* Push links to the right if they exist */
+    }
+
+    .nav-logo {
+        height: 24px;
+        /* Smaller logo for mobile */
+    }
+
+    /* Hide standard nav links and implement a hamburger or simplify */
+    .nav-links {
+        opacity: 0;
+        visibility: hidden;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        padding: 20px 0;
+        backdrop-filter: blur(10px);
+        gap: 0;
+        border-bottom: 1px solid #eee;
+        z-index: 40;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+
+    /* Target state when hamburger is open */
+    .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .nav-links li a {
+        font-size: 1.2rem;
+        padding: 16px 40px;
+        width: 100%;
+        display: block;
+        text-align: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    /* Hamburger icon container */
+    .mobile-menu-btn {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 24px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 60;
+    }
+
+    .mobile-menu-btn span {
+        width: 30px;
+        height: 3px;
+        background: #1f1f1f;
+        border-radius: 10px;
+        transition: all 0.3s linear;
+        position: relative;
+        transform-origin: 1px;
+    }
+
+    /* Hamburger Animation States */
+    .mobile-menu-btn.open span:nth-child(1) {
+        transform: rotate(45deg);
+    }
+
+    .mobile-menu-btn.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-btn.open span:nth-child(3) {
+        transform: rotate(-45deg);
+    }
+
+    /* Dropdown and Mega Menu Mobile Adjustments */
+    .dropdown {
+        width: 100%;
+    }
+
+    .dropdown-content {
+        position: static;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        background: transparent;
+    }
+
+    .mega-menu-inner {
+        flex-direction: column;
+        padding: 10px 20px;
+        gap: 12px;
+    }
+
+    .mega-link {
+        padding: 12px 16px;
+    }
+
+    .mega-title {
+        font-size: 1.05rem;
+    }
+
+    .mega-desc {
+        font-size: 0.85rem;
+    }
+
+    /* Hero Section */
+    .content {
+        top: 50%;
+        /* Center purely vertically */
+        width: 95%;
+    }
+
+    .logo {
+        width: 150px;
+        /* Scale logo down further */
+    }
+
+    h1.typing-container {
+        font-size: 1.8rem !important;
+        /* Increased size, let it break into lines naturally */
+        min-width: 0 !important;
+        max-width: 100% !important;
+        /* Remove min-width restriction */
+        width: 100%;
+        min-height: auto;
+        line-height: 1.35;
+        padding: 0 20px;
+        /* Prevent edge-to-edge kissing */
+        box-sizing: border-box;
+        white-space: normal !important;
+        /* CRITICAL: force wrapping which the typewriter might fight */
+    }
+
+    .magma-text {
+        font-size: 1.8rem !important;
+        /* Force inline magma-text span to match parent size */
+        white-space: normal !important;
+        /* Ensure the inline span doesn't prevent wrapping */
+        word-wrap: break-word;
+        /* Allow long words to break if necessary */
+    }
+
+    /* Hero Action Buttons */
+    .hero-buttons {
+        flex-direction: column;
+        /* Stack buttons vertically */
+        width: 100%;
+        max-width: 280px;
+        /* Limit width */
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        width: 100%;
+        /* Full width buttons internally */
+        padding: 10px 16px;
+        /* Thinner buttons for mobile */
+        font-size: 1rem;
+        /* Slightly smaller text for mobile */
+    }
+
+    /* Dot Navigation */
+    .dot-nav {
+        /* Move to bottom center */
+        left: 50%;
+        top: auto;
+        bottom: 20px;
+        transform: translateX(-50%);
+        flex-direction: row;
+        /* Horizontal dots */
+        gap: 16px;
+    }
+
+    .dot-item {
+        flex-direction: column;
+        /* Align dot and label vertically */
+        gap: 8px;
+    }
+
+    .dot-label {
+        font-size: 0.8rem;
+        transform: translateY(10px);
+        /* Hide label downwards initially instead of left */
+    }
+
+    .dot-item.active .dot-label,
+    .dot-item:hover .dot-label {
+        transform: translateY(0);
+    }
+
+    /* Demo Video Section */
+    .demo-section {
+        height: auto;
+        min-height: 0;
+        aspect-ratio: auto;
+        background-color: transparent;
+    }
+
+    .video-wrapper {
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    #demo-drxas .video-wrapper {
+        aspect-ratio: 3024 / 1654;
+    }
+
+    #demo-xasprep .video-wrapper {
+        aspect-ratio: 2992 / 1896;
+    }
+
+    #demo-xasbench .video-wrapper {
+        aspect-ratio: 3024 / 1898;
+    }
+
+    .demo-video {
+        height: 100%;
+        max-height: none;
+        object-fit: cover;
+    }
+
+    .video-overlay-content {
+        bottom: 20px;
+    }
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. XAS · EXAFS Explorer</title>
+    <link rel="icon" type="image/png" href="drxas_logo_small.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="explorer.css?v=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+    <script src="explorer_data.js?v=1"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="index.html"><img src="drxas_logo.png" alt="Dr. XAS Logo" class="nav-logo"></a>
+            <span class="nav-page-title">EXAFS&nbsp;Explorer&nbsp;<span class="beta-pill">prototype</span></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#agent-panel">Agent view</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>From raw scan to <span class="magma-text">agent-ready insight</span>, entirely in the browser.</h1>
+        <p class="hero-sub">
+            A zero-install EXAFS reduction pipeline: pre-edge normalization, AUTOBK-style spline background,
+            Fourier transform to R-space, and Cauchy wavelet analysis, all client-side JavaScript.
+            Every step is logged as a structured tool call, ready for the Dr. XAS agent to consume.
+        </p>
+        <div class="hero-actions">
+            <button class="btn btn-primary" id="btn-run-demo">Run pipeline on Cu foil</button>
+            <label class="btn btn-secondary" for="file-input">Upload your scan (.dat / XDI)</label>
+            <input type="file" id="file-input" accept=".dat,.txt,.xdi,.csv" hidden>
+        </div>
+        <p class="hero-note" id="dataset-label">Demo dataset: Cu foil K-edge, APS 13-ID-C (M. Newville), from this repository.</p>
+    </header>
+
+    <main class="layout">
+        <!-- Controls -->
+        <section class="card controls-card">
+            <h2>Pipeline controls</h2>
+            <div class="controls-grid">
+                <div class="ctrl">
+                    <label>k-weight</label>
+                    <div class="seg" id="kw-seg">
+                        <button data-kw="1">k¹</button>
+                        <button data-kw="2" class="active">k²</button>
+                        <button data-kw="3">k³</button>
+                    </div>
+                </div>
+                <div class="ctrl">
+                    <label>FT window&nbsp;<span class="mono" id="kwin-label">k = 2.0 – 13.0 Å⁻¹</span></label>
+                    <div class="dual-range">
+                        <input type="range" id="kmin" min="0" max="10" step="0.5" value="2">
+                        <input type="range" id="kmax" min="8" max="17" step="0.5" value="13">
+                    </div>
+                </div>
+                <div class="ctrl">
+                    <label>R<sub>bkg</sub>&nbsp;<span class="mono" id="rbkg-label">1.0 Å</span></label>
+                    <input type="range" id="rbkg" min="0.6" max="1.6" step="0.1" value="1.0">
+                </div>
+                <div class="ctrl">
+                    <label class="toggle-row">
+                        <input type="checkbox" id="larch-overlay" checked>
+                        <span>Overlay Larch reference <span class="hint">(validation, Cu demo only)</span></span>
+                    </label>
+                    <label class="toggle-row">
+                        <input type="checkbox" id="wavelet-3d">
+                        <span>3D wavelet surface</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plots -->
+        <section class="plots-grid">
+            <div class="card plot-card">
+                <div class="plot-head"><h3>E-space</h3><span class="plot-sub">μ(E) with pre/post-edge fits and E₀</span></div>
+                <div id="plot-e" class="plot"></div>
+            </div>
+            <div class="card plot-card">
+                <div class="plot-head"><h3>k-space</h3><span class="plot-sub">k<sup>w</sup>·χ(k) with FT window</span></div>
+                <div id="plot-k" class="plot"></div>
+            </div>
+            <div class="card plot-card">
+                <div class="plot-head"><h3>R-space</h3><span class="plot-sub">|χ(R)|, peaks are uncorrected (≈ R − 0.3 to 0.5 Å)</span></div>
+                <div id="plot-r" class="plot"></div>
+            </div>
+            <div class="card plot-card">
+                <div class="plot-head"><h3>Wavelet</h3><span class="plot-sub">Cauchy wavelet magnitude |W(k, R)| · magma colormap</span></div>
+                <div id="plot-w" class="plot"></div>
+            </div>
+        </section>
+
+        <!-- Agent panel -->
+        <section class="card agent-card" id="agent-panel">
+            <div class="agent-head">
+                <h2>Agent view</h2>
+                <p>Every pipeline stage is emitted as a structured tool call. The digest below is the
+                   machine-readable payload an LLM agent in the Dr. XAS platform would receive instead of pixels.</p>
+                <div class="agent-actions">
+                    <button class="btn btn-primary btn-sm" id="btn-digest">Generate agent digest</button>
+                    <button class="btn btn-secondary btn-sm" id="btn-copy" disabled>Copy JSON</button>
+                </div>
+            </div>
+            <div class="agent-cols">
+                <div class="agent-col">
+                    <h4>Tool-call trace</h4>
+                    <div class="trace mono" id="trace"></div>
+                </div>
+                <div class="agent-col">
+                    <h4>spectrum_digest.json</h4>
+                    <pre class="digest mono" id="digest">// click “Generate agent digest”</pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>EXAFS Explorer prototype for the <a href="https://dr-xas.org">Dr. XAS</a> ecosystem ·
+           reduction pipeline cross-validated against Larch (autobk rbkg=1.0, xftf kmin=2 kmax=13 dk=1 kw=2) ·
+           demo data: Cu foil K-edge, M. Newville, APS 13-ID-C.</p>
+        <p class="muted">Built as a concept contribution by Ishraque Zaman Borshon.</p>
+    </footer>
+
+    <script src="explorer.js?v=1"></script>
+</body>
+
+</html>

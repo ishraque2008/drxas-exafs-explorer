@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dr. XAS</title>
+    <link rel="icon" type="image/png" href="drxas_logo_small.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=38">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="drxas_logo.png" alt="Dr. XAS Logo" class="nav-logo">
+        </div>
+        <button class="mobile-menu-btn" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a href="#">Introduction</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Dr. XAS Suite <svg class="chevron" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg></a>
+                <div class="dropdown-content">
+                    <div class="mega-menu-inner layout-divider">
+                        <!-- Left side -->
+                        <div class="mega-left-col">
+                            <a href="#demo-drxas" class="mega-link mega-compact"
+                                onclick="document.querySelector('.nav-links').classList.remove('active'); document.querySelector('.mobile-menu-btn').classList.remove('open');">
+                                <div class="mega-content-row">
+                                    <span class="mega-title magma-color-3">Dr. XAS</span>
+                                    <span class="mega-desc">The AI companion for X-ray absorption spectroscopy.</span>
+                                </div>
+                            </a>
+                        </div>
+                        <!-- Right side -->
+                        <div class="mega-col divider-left">
+                            <!-- FIX: XASpert now points to its own section #demo-xaspert -->
+                            <a href="#demo-xaspert" class="mega-link mega-compact"
+                                onclick="document.querySelector('.nav-links').classList.remove('active'); document.querySelector('.mobile-menu-btn').classList.remove('open');">
+                                <div class="mega-content-row">
+                                    <span class="mega-title magma-color-3">XASpert</span>
+                                    <span class="mega-desc">Multi agents for literature grounding, idea generation, and reflection</span>
+                                </div>
+                            </a>
+                            <div class="divider-horizontal"></div>
+                            <a href="#demo-xasprep" class="mega-link mega-compact"
+                                onclick="document.querySelector('.nav-links').classList.remove('active'); document.querySelector('.mobile-menu-btn').classList.remove('open');">
+                                <div class="mega-content-row">
+                                    <span class="mega-title magma-color-2">XASprep</span>
+                                    <span class="mega-desc">Preparing experimental XAS transmission samples.</span>
+                                </div>
+                            </a>
+                            <div class="divider-horizontal"></div>
+                            <a href="#demo-xasbench" class="mega-link mega-compact"
+                                onclick="document.querySelector('.nav-links').classList.remove('active'); document.querySelector('.mobile-menu-btn').classList.remove('open');">
+                                <div class="mega-content-row">
+                                    <span class="mega-title magma-color-1">XASbench</span>
+                                    <span class="mega-desc">Experimental databases and benchmarking.</span>
+                                </div>
+                            </a>
+                            <!-- FIX: Added missing divider before EXAFS Explorer -->
+                            <div class="divider-horizontal"></div>
+                            <a href="explorer.html" class="mega-link mega-compact">
+                                <div class="mega-content-row">
+                                    <span class="mega-title magma-color-2">EXAFS Explorer</span>
+                                    <span class="mega-desc">Interactive in-browser EXAFS reduction and wavelet analysis.</span>
+                                </div>
+                            </a>
+                            <div class="divider-horizontal"></div>
+                            <div class="mega-link mega-compact"
+                                style="cursor: default; opacity: 0.7; padding-top: 8px; padding-bottom: 8px;">
+                                <div class="mega-content-row">
+                                    <span class="mega-title" style="color: #888;">More coming soon...</span>
+                                    <span class="mega-desc">Stay tuned as we expand the Dr. XAS ecosystem.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+        </div>
+    </nav>
+    <canvas id="particleCanvas"></canvas>
+    <section class="hero-section">
+        <div class="content">
+            <div class="hero-container">
+                <img src="drxas_logo.png" alt="Dr. XAS Logo" class="logo">
+                <div class="text-content">
+                    <h1 class="typing-container">
+                        <span class="magma-text" id="typewriter-text"></span><span class="cursor" id="cursor"></span>
+                    </h1>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#demo-drxas" class="btn btn-primary">See demo</a>
+                    <a href="https://forms.gle/YVy7SZe7Ekq5RNkg7" class="btn btn-secondary" target="_blank">Beta
+                        access</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Dr. XAS Demo Video Section -->
+    <section class="demo-section" id="demo-drxas">
+        <div class="video-wrapper">
+            <!-- FIX: Removed redundant webkit-playsinline (covered by standard playsinline) -->
+            <video id="video-drxas" preload="metadata" autoplay loop muted playsinline
+                poster="assets/demo/dr_xas-poster.jpg?v=3" class="demo-video active" aria-label="Dr. XAS demo video">
+                <source src="assets/demo/dr_xas.mp4?v=3" type="video/mp4">
+            </video>
+        </div>
+    </section>
+    <!-- XASprep Demo Video Section -->
+    <section class="demo-section" id="demo-xasprep">
+        <div class="video-wrapper">
+            <video id="video-xasprep" preload="metadata" autoplay loop muted playsinline
+                poster="assets/demo/XASPrep_2x-poster.jpg?v=5" class="demo-video active"
+                data-mobile-src="assets/demo/XASPrep_2x-mobile.mp4?v=3"
+                aria-label="XASprep demo video">
+                <source src="assets/demo/XASPrep_2x.mp4?v=5" type="video/mp4">
+            </video>
+            <div class="video-overlay-content">
+                <a href="https://easyxascalc.dr-xas.org/" class="btn btn-primary" target="_blank"
+                    rel="noopener noreferrer">Access the tool</a>
+            </div>
+        </div>
+    </section>
+    <!-- XASbench Demo Video Section -->
+    <section class="demo-section" id="demo-xasbench">
+        <div class="video-wrapper">
+            <video id="video-xasbench" preload="metadata" autoplay loop muted playsinline
+                poster="assets/demo/XASBench_2x-poster.jpg?v=4" class="demo-video active"
+                data-mobile-src="assets/demo/XASBench_2x-mobile.mp4?v=2"
+                data-mobile-poster="assets/demo/XASBench_2x-poster.jpg?v=4"
+                aria-label="XASbench demo video">
+                <source src="assets/demo/XASBench_2x.mp4?v=4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+    <!-- Left Side Dot Navigation -->
+    <nav class="dot-nav">
+        <a href="#demo-drxas" class="dot-item active group-3" data-target="demo-drxas">
+            <span class="dot-indicator"></span>
+            <span class="dot-label">Dr. XAS</span>
+        </a>
+        <a href="#demo-xasprep" class="dot-item group-2" data-target="demo-xasprep">
+            <span class="dot-indicator"></span>
+            <span class="dot-label">XASprep</span>
+        </a>
+        <a href="#demo-xasbench" class="dot-item group-1" data-target="demo-xasbench">
+            <span class="dot-indicator"></span>
+            <span class="dot-label">XASbench</span>
+        </a>
+    </nav>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-bottom-container">
+            <div class="footer-left">
+                <div class="footer-socials">
+                    <a href="https://github.com/Dr-XAS" aria-label="GitHub" target="_blank" class="social-github">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                        </svg>
+                    </a>
+                    <a href="https://x.com/drx_xas" aria-label="X (formerly Twitter)" target="_blank" class="social-x">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                        </svg>
+                    </a>
+                    <a href="https://discord.gg/cxefJpZQ" aria-label="Discord" target="_blank" class="social-discord">
+                        <svg width="24" height="24" viewBox="0 0 127.14 96.36" fill="currentColor">
+                            <path
+                                d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a67.55,67.55,0,0,1-10.87,5.19,77.13,77.13,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.2,46,96.12,53,91.08,65.69,84.69,65.69Z" />
+                        </svg>
+                    </a>
+                    <a href="mailto:dr.xas.drx@gmail.com" aria-label="Email" class="social-email">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="footer-links-row">
+                    <a href="#">About Us</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+                <div class="footer-ldrd-support">
+                    This project is supported by the Laboratory Directed Research and Development (LDRD) program at the
+                    Advanced Photon Source, Argonne National Laboratory.
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2026 Dr. XAS Project. All rights reserved.</p>
+                </div>
+            </div>
+            <div class="footer-right">
+            </div>
+        </div>
+    </footer>
+    <script src="script.js?v=23"></script>
+</body>
+</html>

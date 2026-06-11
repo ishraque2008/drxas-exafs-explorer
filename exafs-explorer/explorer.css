@@ -1,0 +1,152 @@
+/* EXAFS Explorer — styled per Dr. XAS DESIGN.md */
+
+:root {
+    --text: #1f1f1f;
+    --text-2: #5f6368;
+    --divider: rgba(0, 0, 0, 0.05);
+    --magma-deep: #3b0f70;
+    --magma-magenta: #8c2981;
+    --magma-pink: #b73779;
+    --magma-coral: #f7705c;
+    --grad: linear-gradient(135deg, rgba(31, 0, 92, 0.9) 0%, rgba(183, 55, 121, 0.9) 100%);
+    --shadow: 0px 12px 32px rgba(0, 0, 0, 0.08);
+    --radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Google Sans', 'Outfit', 'Roboto', Arial, sans-serif;
+    color: var(--text);
+    background: #ffffff;
+}
+.mono { font-family: 'Roboto Mono', monospace; }
+
+/* ---------- Navbar ---------- */
+.navbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--divider);
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+}
+.nav-brand { display: flex; align-items: center; gap: 14px; }
+.nav-logo { height: 34px; display: block; }
+.nav-page-title { font-size: 1.05rem; font-weight: 500; color: var(--text-2); }
+.beta-pill {
+    font-size: 0.7rem; color: #fff; background: var(--grad);
+    padding: 2px 10px; border-radius: 40px; vertical-align: middle; font-weight: 500;
+}
+.nav-links { display: flex; gap: 26px; list-style: none; }
+.nav-links a { text-decoration: none; color: #444746; font-size: 1rem; transition: color 0.2s ease; }
+.nav-links a:hover { color: var(--text); }
+
+/* ---------- Hero ---------- */
+.hero { max-width: 880px; margin: 64px auto 36px; padding: 0 24px; text-align: center; }
+.hero h1 { font-size: 3rem; font-weight: 500; letter-spacing: -0.015em; line-height: 1.15; }
+.magma-text {
+    background: linear-gradient(110deg, #3b0f70 0%, #b73779 55%, #f7705c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+.hero-sub { color: var(--text-2); font-size: 1.05rem; line-height: 1.55; margin-top: 18px; }
+.hero-actions { display: flex; gap: 14px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+.hero-note { margin-top: 16px; font-size: 0.85rem; color: var(--text-2); }
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-block; border: none; cursor: pointer;
+    border-radius: 40px; padding: 12px 26px;
+    font-size: 1rem; font-weight: 500; font-family: inherit;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--grad); color: #fff; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); }
+.btn-primary:hover { box-shadow: 0 6px 18px rgba(183, 55, 121, 0.3); }
+.btn-secondary {
+    background-color: rgba(245, 245, 247, 0.7); backdrop-filter: blur(8px); color: #111111;
+}
+.btn-secondary:hover { background-color: #ebebed; }
+.btn-sm { padding: 9px 20px; font-size: 0.9rem; }
+.btn:disabled { opacity: 0.45; cursor: default; }
+
+/* ---------- Layout & cards ---------- */
+.layout { max-width: 1240px; margin: 0 auto 70px; padding: 0 24px; display: flex; flex-direction: column; gap: 22px; }
+.card {
+    background: #fff; border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 22px 26px;
+    border: 1px solid var(--divider);
+}
+.card h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 14px; }
+.card h3 { font-size: 1.1rem; font-weight: 600; }
+.card h4 { font-size: 0.92rem; font-weight: 600; color: var(--text-2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* ---------- Controls ---------- */
+.controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; align-items: start; }
+.ctrl label { font-size: 0.92rem; color: var(--text-2); display: block; margin-bottom: 8px; }
+.seg { display: inline-flex; background: #f5f5f7; border-radius: 40px; padding: 4px; }
+.seg button {
+    border: none; background: transparent; padding: 7px 18px; border-radius: 40px;
+    font-family: inherit; font-size: 0.95rem; cursor: pointer; color: var(--text-2);
+    transition: all 0.2s ease;
+}
+.seg button.active { background: var(--grad); color: #fff; }
+input[type="range"] { width: 100%; accent-color: var(--magma-pink); }
+.dual-range { display: flex; flex-direction: column; gap: 6px; }
+.toggle-row { display: flex; gap: 9px; align-items: center; cursor: pointer; margin-bottom: 10px; }
+.toggle-row input { accent-color: var(--magma-pink); width: 16px; height: 16px; }
+.hint { color: #9aa0a6; font-size: 0.8rem; }
+
+/* ---------- Plots ---------- */
+.plots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.plot-card { padding: 18px 18px 8px; }
+.plot-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; padding: 0 6px; }
+.plot-sub { color: var(--text-2); font-size: 0.83rem; }
+.plot { width: 100%; height: 360px; }
+
+/* ---------- Agent panel ---------- */
+.agent-head p { color: var(--text-2); font-size: 0.95rem; line-height: 1.5; max-width: 760px; }
+.agent-actions { margin: 16px 0 20px; display: flex; gap: 12px; }
+.agent-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.trace, .digest {
+    background: #1c1b22; color: #e8e6f0; border-radius: var(--radius);
+    padding: 16px 18px; font-size: 0.8rem; line-height: 1.55;
+    min-height: 260px; max-height: 420px; overflow: auto; white-space: pre-wrap;
+}
+.trace .tc-name { color: var(--magma-coral); font-weight: 500; }
+.trace .tc-args { color: #b9b4d0; }
+.trace .tc-ms { color: #7f7a99; }
+.digest .key { color: var(--magma-coral); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+    border-top: 1px solid var(--divider); padding: 28px 24px 40px;
+    text-align: center; color: var(--text-2); font-size: 0.85rem; line-height: 1.6;
+}
+.site-footer a { color: var(--magma-pink); text-decoration: none; }
+.muted { color: #9aa0a6; margin-top: 6px; }
+
+/* drag-over state */
+body.dragging::after {
+    content: "Drop your XAS scan anywhere";
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(59, 15, 112, 0.72); color: #fff; font-size: 1.6rem; font-weight: 500;
+    z-index: 999; backdrop-filter: blur(4px);
+}
+
+@media (max-width: 920px) {
+    .plots-grid, .agent-cols { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.1rem; }
+    .navbar { padding: 0 16px; }
+    .nav-page-title { display: none; }
+    .plot { height: 320px; }
+}
